@@ -1,0 +1,1054 @@
+// RGF Marketing Team OS — Prisma Schema
+// Target: Azure Database for PostgreSQL
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ─────────────────────────────────────────
+// ORGANIZATION & BRAND
+// ─────────────────────────────────────────
+
+model Organization {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  country     String   @default("BE")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  brands      Brand[]
+  users       User[]
+  workspaces  Workspace[]
+}
+
+model Brand {
+  id             String   @id @default(cuid())
+  organizationId String
+  name           String
+  slug           String
+  shortName      String
+  color          String
+  accentColor    String
+  bgColor        String
+  description    String?
+  positioning    String?
+  toneOfVoice    String?
+  approvedVocabulary  String[]
+  forbiddenWording    String[]
+  keyMessages         String[]
+  proofPoints         String[]
+  serviceOfferings    String[]
+  preferredCTAs       String[]
+  channelRules        String?
+  contentToAvoid      String?
+  brandMaturityScore  Int      @default(0)
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization        Organization          @relation(fields: [organizationId], references: [id])
+  userBrandAccess     UserBrandAccess[]
+  campaigns           Campaign[]
+  contentAssets       ContentAsset[]
+  salesAssets         SalesAsset[]
+  approvals           Approval[]
+  complianceChecks    ComplianceCheck[]
+  marketInsights      MarketInsight[]
+  candidateCampaigns  CandidateCampaign[]
+  performanceMetrics  PerformanceMetric[]
+  calendarItems       CalendarItem[]
+  tasks               Task[]
+  approvalMatrix      ApprovalMatrixEntry[]
+
+  @@unique([organizationId, slug])
+}
+
+// ─────────────────────────────────────────
+// USERS & ACCESS
+// ─────────────────────────────────────────
+
+model User {
+  id             String      @id @default(cuid())
+  organizationId String
+  email          String      @unique
+  name           String
+  initials       String
+  avatarUrl      String?
+  role           UserRole
+  accessScope    AccessScope
+  primaryBrandId String?
+  isActive       Boolean     @default(true)
+  microsoftEntraId String?   // future SSO
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  organization    Organization      @relation(fields: [organizationId], references: [id])
+  brandAccess     UserBrandAccess[]
+  ownedCampaigns  Campaign[]        @relation("CampaignOwner")
+  createdContent  ContentAsset[]    @relation("ContentCreator")
+  assignedTasks   Task[]            @relation("TaskAssignee")
+  createdTasks    Task[]            @relation("TaskCreator")
+  approvals       Approval[]        @relation("ApprovalReviewer")
+  aiOutputLogs    AIOutputLog[]
+  recommendations Recommendation[]  @relation("RecipientUser")
+}
+
+enum UserRole {
+  GROUP_MARKETING_DIRECTOR
+  BRAND_MARKETING_MANAGER
+  MARKETING_MANAGER
+  DIGITAL_MARKETEER
+  CONTENT_MANAGER
+  SALES_ENABLEMENT_MANAGER
+  SALES_USER
+  COMPLIANCE_REVIEWER
+  MARKETING_OPERATIONS
+  LEADERSHIP_VIEWER
+}
+
+enum AccessScope {
+  brand_only
+  multi_brand
+  group_all_brands
+}
+
+model UserBrandAccess {
+  id      String @id @default(cuid())
+  userId  String
+  brandId String
+
+  user  User  @relation(fields: [userId], references: [id])
+  brand Brand @relation(fields: [brandId], references: [id])
+
+  @@unique([userId, brandId])
+}
+
+// ─────────────────────────────────────────
+// WORKSPACE
+// ─────────────────────────────────────────
+
+model Workspace {
+  id             String          @id @default(cuid())
+  organizationId String
+  name           String
+  scope          WorkspaceScope
+  brandId        String?
+  createdAt      DateTime        @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+}
+
+enum WorkspaceScope {
+  brand
+  multi_brand
+  group
+}
+
+// ─────────────────────────────────────────
+// STRATEGY
+// ─────────────────────────────────────────
+
+model MarketingPlan {
+  id             String   @id @default(cuid())
+  organizationId String
+  brandId        String?
+  year           Int
+  title          String
+  description    String?
+  status         PlanStatus @default(DRAFT)
+  totalBudget    Float
+  allocatedBudget Float   @default(0)
+  spentBudget    Float    @default(0)
+  visibilityScope VisibilityScope @default(brand)
+  createdBy      String
+  ownerId        String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  priorities QuarterlyPriority[]
+}
+
+enum PlanStatus {
+  DRAFT
+  ACTIVE
+  COMPLETED
+  ARCHIVED
+}
+
+model QuarterlyPriority {
+  id              String   @id @default(cuid())
+  marketingPlanId String
+  brandId         String?
+  quarter         Int
+  year            Int
+  title           String
+  description     String?
+  pillar          String?
+  audience        String?
+  channel         String?
+  objective       String?
+  budget          Float    @default(0)
+  status          PriorityStatus @default(PLANNED)
+  impact          ImpactLevel @default(MEDIUM)
+  effort          EffortLevel @default(MEDIUM)
+  createdAt       DateTime @default(now())
+
+  plan MarketingPlan @relation(fields: [marketingPlanId], references: [id])
+}
+
+enum PriorityStatus {
+  PLANNED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum ImpactLevel {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum EffortLevel {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+// ─────────────────────────────────────────
+// CAMPAIGNS
+// ─────────────────────────────────────────
+
+model Campaign {
+  id              String         @id @default(cuid())
+  organizationId  String
+  brandId         String
+  name            String
+  slug            String
+  type            CampaignType
+  status          CampaignStatus @default(DRAFT)
+  objective       String?
+  audience        String?
+  keyMessage      String?
+  cta             String?
+  language        String         @default("fr")
+  startDate       DateTime?
+  endDate         DateTime?
+  budget          Float          @default(0)
+  spent           Float          @default(0)
+  healthScore     Int            @default(0)
+  readiness       Int            @default(0)
+  visibilityScope VisibilityScope @default(brand)
+  ownerId         String
+  createdBy       String
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  brand           Brand          @relation(fields: [brandId], references: [id])
+  owner           User           @relation("CampaignOwner", fields: [ownerId], references: [id])
+  brief           CampaignBrief?
+  workspace       CampaignWorkspace?
+  digitalSetup    CampaignDigitalSetup?
+  launchChecklist CampaignLaunchChecklist?
+  abTests         ABTest[]
+  contentAssets   ContentAsset[]
+  approvals       Approval[]
+  complianceChecks ComplianceCheck[]
+  performanceMetrics PerformanceMetric[]
+  funnelMetrics   FunnelMetric[]
+  healthScores    CampaignHealthScore[]
+  recommendations Recommendation[]
+  tasks           Task[]
+  calendarItems   CalendarItem[]
+  retrospective   CampaignRetrospective?
+}
+
+enum CampaignType {
+  AWARENESS
+  RECRUITMENT
+  EMPLOYER_BRANDING
+  LEAD_GEN
+  RETENTION
+  SEASONAL
+  CANDIDATE_ATTRACTION
+  B2B_SALES
+}
+
+enum CampaignStatus {
+  DRAFT
+  PLANNING
+  APPROVED
+  LIVE
+  PAUSED
+  COMPLETED
+  ARCHIVED
+}
+
+enum VisibilityScope {
+  brand
+  multi_brand
+  group
+}
+
+model CampaignBrief {
+  id              String   @id @default(cuid())
+  campaignId      String   @unique
+  context         String?
+  challenge       String?
+  targetAudience  String?
+  keyInsight      String?
+  proposition     String?
+  evidence        String?
+  deliverables    String[]
+  channels        String[]
+  kpis            Json     @default("[]")
+  approvalStatus  ApprovalStatus @default(NOT_SUBMITTED)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  campaign Campaign @relation(fields: [campaignId], references: [id])
+}
+
+enum ApprovalStatus {
+  NOT_SUBMITTED
+  PENDING
+  APPROVED
+  REJECTED
+  CHANGES_REQUESTED
+}
+
+model CampaignWorkspace {
+  id              String   @id @default(cuid())
+  campaignId      String   @unique
+  summary         String?
+  blockers        String[]
+  nextActions     String[]
+  aiSummary       String?
+  lastUpdated     DateTime @default(now())
+
+  campaign Campaign @relation(fields: [campaignId], references: [id])
+}
+
+model CampaignDigitalSetup {
+  id              String   @id @default(cuid())
+  campaignId      String   @unique
+  campaignUrl     String?
+  landingPageUrl  String?
+  utmSource       String?
+  utmMedium       String?
+  utmCampaign     String?
+  utmContent      String?
+  utmTerm         String?
+  generatedUrl    String?
+  conversionGoal  String?
+  funnelStage     String?
+  trackingStatus  TrackingStatus @default(NOT_STARTED)
+  analyticsReady  Boolean  @default(false)
+  paidFlag        Boolean  @default(false)
+  seoKeyword      String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  campaign Campaign @relation(fields: [campaignId], references: [id])
+}
+
+enum TrackingStatus {
+  NOT_STARTED
+  NEEDS_SETUP
+  READY_FOR_TEST
+  TESTED
+  LIVE
+  ISSUE_DETECTED
+}
+
+model CampaignLaunchChecklist {
+  id                    String   @id @default(cuid())
+  campaignId            String   @unique
+  briefValidated        Boolean  @default(false)
+  brandSelected         Boolean  @default(false)
+  audienceSelected      Boolean  @default(false)
+  objectiveDefined      Boolean  @default(false)
+  kpisDefined           Boolean  @default(false)
+  contentAssetsCreated  Boolean  @default(false)
+  salesAssetsCreated    Boolean  @default(false)
+  brandScoreAcceptable  Boolean  @default(false)
+  complianceCompleted   Boolean  @default(false)
+  approvalsCompleted    Boolean  @default(false)
+  landingPageReady      Boolean  @default(false)
+  utmGenerated          Boolean  @default(false)
+  trackingQACompleted   Boolean  @default(false)
+  publicationConfirmed  Boolean  @default(false)
+  ownersAssigned        Boolean  @default(false)
+  retrospectivePrepared Boolean  @default(false)
+  overriddenBy          String?
+  overriddenAt          DateTime?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  campaign Campaign @relation(fields: [campaignId], references: [id])
+}
+
+model LandingPageBrief {
+  id              String   @id @default(cuid())
+  campaignId      String
+  pageObjective   String?
+  targetAudience  String?
+  headline        String?
+  subheadline     String?
+  heroMessage     String?
+  valueProposition String?
+  painPoints      String[]
+  proofPoints     String[]
+  cta             String?
+  formFields      String[]
+  thankYouPage    String?
+  seoTitle        String?
+  metaDescription String?
+  focusKeyword    String?
+  h1Structure     String?
+  faqIdeas        String[]
+  internalLinks   String[]
+  trackingNotes   String?
+  complianceNotes String?
+  aiGenerated     Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model ABTest {
+  id          String    @id @default(cuid())
+  campaignId  String
+  name        String
+  channel     String
+  kpi         String
+  status      ABTestStatus @default(DRAFT)
+  winnerId    String?
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  campaign  Campaign       @relation(fields: [campaignId], references: [id])
+  variants  ABTestVariant[]
+}
+
+enum ABTestStatus {
+  DRAFT
+  RUNNING
+  COMPLETED
+  CANCELLED
+}
+
+model ABTestVariant {
+  id              String   @id @default(cuid())
+  abTestId        String
+  name            String
+  content         String
+  hypothesis      String?
+  targetAudience  String?
+  expectedImpact  String?
+  actualCTR       Float?
+  actualConversions Int?
+  isWinner        Boolean  @default(false)
+  createdAt       DateTime @default(now())
+
+  abTest ABTest @relation(fields: [abTestId], references: [id])
+}
+
+model CampaignRetrospective {
+  id              String   @id @default(cuid())
+  campaignId      String   @unique
+  whatWorked      String?
+  whatDidntWork   String?
+  learnings       String?
+  reusableAssets  String[]
+  performanceSummary String?
+  aiRecommendations  String?
+  nextCampaignSuggestion String?
+  createdAt       DateTime @default(now())
+
+  campaign Campaign @relation(fields: [campaignId], references: [id])
+}
+
+// ─────────────────────────────────────────
+// CONTENT
+// ─────────────────────────────────────────
+
+model ContentAsset {
+  id              String      @id @default(cuid())
+  organizationId  String
+  brandId         String
+  campaignId      String?
+  title           String
+  type            ContentType
+  channel         String?
+  language        String      @default("fr")
+  status          ContentStatus @default(DRAFT)
+  brandScore      Int         @default(0)
+  complianceRisk  ComplianceRisk @default(LOW)
+  visibilityScope VisibilityScope @default(brand)
+  tags            String[]
+  ownerId         String
+  createdBy       String
+  dueDate         DateTime?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  brand       Brand           @relation(fields: [brandId], references: [id])
+  campaign    Campaign?       @relation(fields: [campaignId], references: [id])
+  creator     User            @relation("ContentCreator", fields: [createdBy], references: [id])
+  versions    ContentVersion[]
+  comments    ContentComment[]
+  approvals   Approval[]
+}
+
+enum ContentType {
+  VISUAL
+  COPY
+  VIDEO
+  DECK
+  TEMPLATE
+  GUIDE
+  EMAIL
+  SOCIAL_POST
+  LANDING_PAGE
+  BLOG_POST
+}
+
+enum ContentStatus {
+  DRAFT
+  REVIEW
+  APPROVED
+  PUBLISHED
+  ARCHIVED
+}
+
+enum ComplianceRisk {
+  LOW
+  MEDIUM
+  HIGH
+  BLOCKED
+}
+
+model ContentVersion {
+  id           String   @id @default(cuid())
+  contentId    String
+  version      Int
+  body         String
+  changeNote   String?
+  createdBy    String
+  createdAt    DateTime @default(now())
+
+  content ContentAsset @relation(fields: [contentId], references: [id])
+}
+
+model ContentComment {
+  id        String   @id @default(cuid())
+  contentId String
+  userId    String
+  body      String
+  resolved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  content ContentAsset @relation(fields: [contentId], references: [id])
+}
+
+// ─────────────────────────────────────────
+// SALES ASSETS
+// ─────────────────────────────────────────
+
+model SalesAsset {
+  id              String     @id @default(cuid())
+  organizationId  String
+  brandId         String
+  title           String
+  type            SalesAssetType
+  segment         String?
+  language        String
+  status          ContentStatus @default(DRAFT)
+  visibilityScope VisibilityScope @default(brand)
+  downloads       Int        @default(0)
+  createdBy       String
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  brand  Brand             @relation(fields: [brandId], references: [id])
+  usages SalesAssetUsage[]
+}
+
+enum SalesAssetType {
+  PITCH_DECK
+  CASE_STUDY
+  BROCHURE
+  EMAIL_TEMPLATE
+  BATTLE_CARD
+  ONE_PAGER
+  PROPOSAL_TEMPLATE
+}
+
+model SalesAssetUsage {
+  id        String   @id @default(cuid())
+  assetId   String
+  userId    String
+  action    String
+  feedback  String?
+  usedAt    DateTime @default(now())
+
+  asset SalesAsset @relation(fields: [assetId], references: [id])
+}
+
+// ─────────────────────────────────────────
+// APPROVALS
+// ─────────────────────────────────────────
+
+model Approval {
+  id           String         @id @default(cuid())
+  organizationId String
+  brandId      String
+  type         ApprovalType
+  status       ApprovalStatus @default(NOT_SUBMITTED)
+  priority     ApprovalPriority @default(NORMAL)
+  title        String
+  description  String?
+  riskLevel    RiskLevel      @default(LOW)
+  blockingReason String?
+  submittedBy  String
+  submittedAt  DateTime       @default(now())
+  deadline     DateTime?
+  campaignId   String?
+  contentId    String?
+  reviewerId   String?
+  resolvedAt   DateTime?
+  resolution   String?
+
+  brand      Brand  @relation(fields: [brandId], references: [id])
+  campaign   Campaign? @relation(fields: [campaignId], references: [id])
+  content    ContentAsset? @relation(fields: [contentId], references: [id])
+  reviewer   User?  @relation("ApprovalReviewer", fields: [reviewerId], references: [id])
+  auditTrail ApprovalAuditEntry[]
+}
+
+enum ApprovalType {
+  CAMPAIGN
+  CONTENT
+  BUDGET
+  STRATEGY
+  SALES_ASSET
+  COMPLIANCE
+}
+
+enum ApprovalPriority {
+  URGENT
+  NORMAL
+  LOW
+}
+
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+model ApprovalAuditEntry {
+  id         String   @id @default(cuid())
+  approvalId String
+  userId     String
+  action     String
+  note       String?
+  createdAt  DateTime @default(now())
+
+  approval Approval @relation(fields: [approvalId], references: [id])
+}
+
+model ApprovalMatrixEntry {
+  id           String @id @default(cuid())
+  brandId      String
+  contentType  String
+  riskLevel    RiskLevel
+  requiredRole UserRole
+  order        Int
+
+  brand Brand @relation(fields: [brandId], references: [id])
+}
+
+// ─────────────────────────────────────────
+// COMPLIANCE
+// ─────────────────────────────────────────
+
+model ComplianceCheck {
+  id           String          @id @default(cuid())
+  organizationId String
+  brandId      String
+  campaignId   String?
+  title        String
+  category     ComplianceCategory
+  status       ComplianceStatus @default(PENDING)
+  riskLevel    RiskLevel       @default(LOW)
+  findings     String[]
+  requiredProof String?
+  checkedBy    String?
+  checkedAt    DateTime?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  brand    Brand     @relation(fields: [brandId], references: [id])
+  campaign Campaign? @relation(fields: [campaignId], references: [id])
+}
+
+enum ComplianceCategory {
+  GDPR
+  BRAND_GUIDELINES
+  LEGAL
+  CONTENT_POLICY
+  HEALTHCARE_CLAIMS
+  FINANCIAL_CLAIMS
+}
+
+enum ComplianceStatus {
+  PENDING
+  COMPLIANT
+  REVIEW_NEEDED
+  NON_COMPLIANT
+  BLOCKED
+}
+
+// ─────────────────────────────────────────
+// CANDIDATE MARKETING
+// ─────────────────────────────────────────
+
+model CandidatePersona {
+  id              String   @id @default(cuid())
+  organizationId  String
+  brandId         String?
+  name            String
+  role            String
+  sector          String?
+  region          String?
+  motivations     String[]
+  painPoints      String[]
+  preferredChannels String[]
+  candidateValueProp String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model CandidateCampaign {
+  id              String   @id @default(cuid())
+  organizationId  String
+  brandId         String
+  name            String
+  objective       String?
+  targetRole      String?
+  targetSector    String?
+  targetRegion    String?
+  shortage        Boolean  @default(false)
+  status          CampaignStatus @default(DRAFT)
+  costPerApplication Float?
+  applications    Int      @default(0)
+  placements      Int      @default(0)
+  startDate       DateTime?
+  endDate         DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  brand Brand @relation(fields: [brandId], references: [id])
+}
+
+model RecruitmentMarketingWorkflow {
+  id          String   @id @default(cuid())
+  brandId     String
+  name        String
+  stages      Json     @default("[]")
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
+
+// ─────────────────────────────────────────
+// MARKET INSIGHTS
+// ─────────────────────────────────────────
+
+model MarketInsight {
+  id              String      @id @default(cuid())
+  organizationId  String
+  brandId         String?
+  type            InsightType
+  title           String
+  body            String
+  source          String?
+  relevance       ImpactLevel @default(MEDIUM)
+  convertedTo     String?
+  convertedAt     DateTime?
+  createdAt       DateTime    @default(now())
+
+  brand Brand? @relation(fields: [brandId], references: [id])
+}
+
+enum InsightType {
+  MARKET_TREND
+  STAFFING_TREND
+  CANDIDATE_TREND
+  COMPETITOR_SIGNAL
+  SECTOR_INSIGHT
+  SHORTAGE_OCCUPATION
+  REGIONAL_INSIGHT
+  SALES_OPPORTUNITY
+}
+
+model CompetitorInsight {
+  id             String   @id @default(cuid())
+  organizationId String
+  competitor     String
+  observation    String
+  source         String?
+  relevantBrands String[]
+  createdAt      DateTime @default(now())
+}
+
+// ─────────────────────────────────────────
+// PERFORMANCE
+// ─────────────────────────────────────────
+
+model PerformanceMetric {
+  id           String   @id @default(cuid())
+  organizationId String
+  brandId      String
+  campaignId   String?
+  contentId    String?
+  channel      String
+  period       String
+  impressions  Int      @default(0)
+  clicks       Int      @default(0)
+  conversions  Int      @default(0)
+  ctr          Float    @default(0)
+  cpc          Float    @default(0)
+  spend        Float    @default(0)
+  roi          Float    @default(0)
+  leads        Int      @default(0)
+  applications Int      @default(0)
+  createdAt    DateTime @default(now())
+
+  brand    Brand     @relation(fields: [brandId], references: [id])
+  campaign Campaign? @relation(fields: [campaignId], references: [id])
+}
+
+model FunnelMetric {
+  id               String   @id @default(cuid())
+  organizationId   String
+  campaignId       String
+  period           String
+  impressions      Int      @default(0)
+  clicks           Int      @default(0)
+  landingPageViews Int      @default(0)
+  formStarts       Int      @default(0)
+  formSubmissions  Int      @default(0)
+  leads            Int      @default(0)
+  mql              Int      @default(0)
+  sql              Int      @default(0)
+  opportunities    Int      @default(0)
+  applications     Int      @default(0)
+  placements       Int      @default(0)
+  revenue          Float    @default(0)
+  createdAt        DateTime @default(now())
+
+  campaign Campaign @relation(fields: [campaignId], references: [id])
+}
+
+model ChannelPerformance {
+  id             String   @id @default(cuid())
+  organizationId String
+  brandId        String?
+  channel        String
+  period         String
+  impressions    Int      @default(0)
+  clicks         Int      @default(0)
+  engagement     Int      @default(0)
+  ctr            Float    @default(0)
+  conversionRate Float    @default(0)
+  leads          Int      @default(0)
+  applications   Int      @default(0)
+  cost           Float    @default(0)
+  roi            Float    @default(0)
+  bestContentId  String?
+  worstContentId String?
+  createdAt      DateTime @default(now())
+}
+
+model CampaignHealthScore {
+  id              String      @id @default(cuid())
+  campaignId      String
+  score           Int
+  status          HealthStatus
+  kpiAchievement  Float       @default(0)
+  funnelConversion Float      @default(0)
+  channelPerf     Float       @default(0)
+  contentEngagement Float     @default(0)
+  digitalReadiness Float      @default(0)
+  complianceHealth Float      @default(1)
+  brandFit        Float       @default(0)
+  capacityRisk    Float       @default(0)
+  calculatedAt    DateTime    @default(now())
+
+  campaign Campaign @relation(fields: [campaignId], references: [id])
+}
+
+enum HealthStatus {
+  HEALTHY
+  NEEDS_ATTENTION
+  AT_RISK
+  CRITICAL
+}
+
+// ─────────────────────────────────────────
+// TASKS & CALENDAR
+// ─────────────────────────────────────────
+
+model Task {
+  id          String     @id @default(cuid())
+  organizationId String
+  brandId     String?
+  campaignId  String?
+  title       String
+  description String?
+  priority    TaskPriority @default(MEDIUM)
+  status      TaskStatus   @default(PENDING)
+  impact      String?
+  dueDate     DateTime?
+  assigneeId  String?
+  creatorId   String
+  hubRef      String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  brand    Brand?    @relation(fields: [brandId], references: [id])
+  campaign Campaign? @relation(fields: [campaignId], references: [id])
+  assignee User?     @relation("TaskAssignee", fields: [assigneeId], references: [id])
+  creator  User      @relation("TaskCreator", fields: [creatorId], references: [id])
+}
+
+enum TaskPriority {
+  CRITICAL
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  DONE
+  CANCELLED
+}
+
+model CalendarItem {
+  id          String         @id @default(cuid())
+  organizationId String
+  brandId     String?
+  campaignId  String?
+  title       String
+  type        CalendarItemType
+  date        DateTime
+  endDate     DateTime?
+  description String?
+  ownerId     String?
+  createdAt   DateTime       @default(now())
+
+  brand    Brand?    @relation(fields: [brandId], references: [id])
+  campaign Campaign? @relation(fields: [campaignId], references: [id])
+}
+
+enum CalendarItemType {
+  PUBLICATION
+  CAMPAIGN_LAUNCH
+  APPROVAL_DEADLINE
+  AB_TEST
+  RETROSPECTIVE
+  SALES_ASSET_RELEASE
+  CONTENT_DEADLINE
+  EVENT
+  WEBINAR
+}
+
+// ─────────────────────────────────────────
+// AI
+// ─────────────────────────────────────────
+
+model AIAgent {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  version     String   @default("1.0")
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  tasks   AITask[]
+  outputs AIOutputLog[]
+}
+
+model AITask {
+  id        String      @id @default(cuid())
+  agentId   String
+  type      String
+  input     Json
+  status    AITaskStatus @default(PENDING)
+  createdAt DateTime    @default(now())
+
+  agent   AIAgent      @relation(fields: [agentId], references: [id])
+  outputs AIOutputLog[]
+}
+
+enum AITaskStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+model AIOutputLog {
+  id          String   @id @default(cuid())
+  agentId     String
+  taskId      String?
+  userId      String
+  function    String
+  input       Json
+  output      Json
+  approved    Boolean  @default(false)
+  approvedBy  String?
+  approvedAt  DateTime?
+  createdAt   DateTime @default(now())
+
+  agent AIAgent  @relation(fields: [agentId], references: [id])
+  task  AITask?  @relation(fields: [taskId], references: [id])
+  user  User     @relation(fields: [userId], references: [id])
+}
+
+model Recommendation {
+  id          String             @id @default(cuid())
+  organizationId String
+  campaignId  String?
+  recipientId String?
+  type        RecommendationType
+  title       String
+  description String
+  impact      ImpactLevel
+  effort      EffortLevel
+  dismissed   Boolean            @default(false)
+  actedOn     Boolean            @default(false)
+  createdAt   DateTime           @default(now())
+
+  campaign  Campaign? @relation(fields: [campaignId], references: [id])
+  recipient User?     @relation("RecipientUser", fields: [recipientId], references: [id])
+}
+
+enum RecommendationType {
+  OPPORTUNITY
+  RISK
+  RECOMMENDATION
+  ALERT
+}
