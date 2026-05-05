@@ -1,0 +1,14 @@
+const fr = {
+  nav: { overview: "Vue d'ensemble", omnitracker: 'OmniTracker', brands: 'Marques', reports: 'Rapports' },
+  topbar: { role: 'Data Stratégiste', logout: 'Déconnexion', language: 'Langue' },
+  login: { title: 'Connexion', subtitle: 'Portail BA-BI Analytics', email: 'Adresse e-mail', password: 'Mot de passe', submit: 'Se connecter', slogan: 'Opportunities for Life', error: 'Identifiants incorrects. Veuillez réessayer.', loading: 'Connexion en cours...' },
+  dashboard: { title: "Vue d'ensemble", totalCalls: 'Total calls 2026', callsThisMonth: 'Calls ce mois', pendingCalls: 'Calls en attente', activeBrands: 'Marques actives', evolutionTitle: 'Évolution annuelle des calls', categoryTitle: 'Répartition par catégorie (2026)', brandsTitle: 'Activité par marque', viewDetails: 'Voir détails' },
+  omnitracker: { title: 'OmniTracker Calls', filters: 'Filtres', opco: 'OPCO', year: 'Année', category: 'Catégorie', afdeling: 'Département', allOpcos: 'Tous les OPCOs', allYears: 'Toutes les années', allCategories: 'Toutes les catégories', allAfdelingen: 'Tous les départements', totalCalls: 'Total calls', mainCategory: 'Catégorie principale', mostActiveOpco: 'OPCO le plus actif', peakHour: 'Heure de pointe', monthlyEvolution: 'Évolution mensuelle', byAfdeling: 'Calls par département', categoryDistribution: 'Répartition des catégories', recentCalls: '20 derniers calls', number: 'Numéro', titleCol: 'Titre', date: 'Date', state: 'Statut', reset: 'Réinitialiser', apply: 'Appliquer' },
+  brands: { title: 'Tableau de bord marque', back: 'Retour', totalCalls: 'Total calls', openCalls: 'Calls ouverts', closedCalls: 'Calls clôturés', avgPerMonth: 'Moyenne / mois', monthlyTrend: 'Tendance mensuelle', categoryBreakdown: 'Répartition des catégories', recentActivity: 'Activité récente' },
+  reports: { title: 'Rapports & Analyses', executiveSummary: 'Résumé exécutif', teamActivity: "Activité de l'équipe BA-BI", exportPdf: 'Exporter en PDF', exportAlert: 'Export PDF en cours de développement', totalVolume: 'Volume total de calls', yearlyTrend: 'Tendance annuelle', topCategories: 'Top catégories', teamWork: "Ce que fait l'équipe BA-BI", categories: { standard: 'Rapports standard périodiques', adhoc: 'Analyses ad hoc sur demande', atlas: "Gestion de l'outil Atlas", greenbook: 'Support incidents Greenbook (kantoor)', bluebook: 'Support incidents Bluebook (klant)', schedule: 'Rapports de planification', tac: 'Gestion des TAC sheets', userMgmt: 'Gestion des accès utilisateurs Atlas' } },
+  states: { Open: 'Ouvert', 'In behandeling': 'En traitement', Gesloten: 'Clôturé', 'Wachten op feedback': 'En attente', Opgelost: 'Résolu' },
+  common: { loading: 'Chargement...', noData: 'Aucune donnée disponible', calls: 'calls', hour: 'h' },
+};
+
+export default fr;
+export type Translations = typeof fr;
