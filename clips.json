@@ -2,13 +2,13 @@
   "_concept": "ANN: THE BUSINESS ANALYST — fausse bande-annonce hollywoodienne d'ensemble pour les 25 ans d'ancienneté d'Ann (Business Analyst, team BI). Ton epique + humoristique. Revelation du casting facon Marvel, puis Ann en heroine, montage data, triomphe. Les cartons-noms et le texte sont ajoutes au montage (Canva), pas par Runway.",
   "_casting": {
     "ann": "Business Analyst - heroine",
+    "liesbeth": "Business Analyst",
+    "laurence": "Business Analyst",
     "denis": "Tech Lead",
     "davy": "Data Engineer (cycliste)",
     "sam": "Data Engineer (photo a recadrer)",
-    "mario": "BI (photo a recadrer)",
-    "tina": "BI (photo N&B)",
-    "liesbeth": "BI",
-    "laurence": "BI",
+    "mario": "Functional Analyst BI (photo a recadrer)",
+    "tina": "Functional Analyst BI (photo N&B)",
     "christophe": "cameo comique"
   },
   "_workflow": "Teste d'abord le clip actif (ann_hero). Quand le rendu te plait, passe les autres a \"active\": true et relance. Les clips decor_* necessitent d'abord une image generee (voir poster.py / text-to-image) deposee dans photos/.",
