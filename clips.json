@@ -1,71 +1,107 @@
 {
-  "_concept": "ANN: THE BUSINESS ANALYST — fausse bande-annonce hollywoodienne, humoristique, pour les 25 ans d'ancienneté de Ann (Business Analyst). Ton épique + décalé. ~2 min au montage final.",
+  "_concept": "ANN: THE BUSINESS ANALYST — fausse bande-annonce hollywoodienne d'ensemble pour les 25 ans d'ancienneté d'Ann (Business Analyst, team BI). Ton epique + humoristique. Revelation du casting facon Marvel, puis Ann en heroine, montage data, triomphe. Les cartons-noms et le texte sont ajoutes au montage (Canva), pas par Runway.",
+  "_casting": {
+    "ann": "Business Analyst - heroine",
+    "denis": "Tech Lead",
+    "davy": "Data Engineer (cycliste)",
+    "sam": "Data Engineer (photo a recadrer)",
+    "mario": "BI (photo a recadrer)",
+    "tina": "BI (photo N&B)",
+    "liesbeth": "BI",
+    "laurence": "BI",
+    "christophe": "cameo comique"
+  },
+  "_workflow": "Teste d'abord le clip actif (ann_hero). Quand le rendu te plait, passe les autres a \"active\": true et relance. Les clips decor_* necessitent d'abord une image generee (voir poster.py / text-to-image) deposee dans photos/.",
   "defaults": {
     "model": "gen4.5",
-    "ratio": "1280:720",
-    "duration": 5
+    "ratio": "832:1104",
+    "duration": 4
   },
   "clips": [
     {
-      "name": "01_calme_avant_tempete",
-      "image": "ann_bureau_cafe.jpg",
-      "prompt": "Cinematic slow push-in on a calm business analyst at her desk holding a coffee, gentle steam rising from the cup, soft warm morning light through office windows, she looks up with a confident knowing smile. Photorealistic, shallow depth of field, the calm before the storm.",
-      "ratio": "1584:672",
+      "name": "ann_hero",
+      "image": "ann_studio.jpg",
+      "prompt": "Epic hero reveal: confident business analyst standing tall, a slow cinematic push-in, subtle smile forming, hair moving gently, a soft lens flare and dramatic rim light sweeping across a clean neutral background. Photorealistic, blockbuster lighting, the hero has arrived.",
+      "ratio": "832:1104",
       "duration": 6,
       "active": true
     },
     {
-      "name": "02_avalanche_demandes",
-      "image": "ann_ecran_mails.jpg",
-      "prompt": "Comedic cinematic shot: dozens of urgent email and chat notifications pop up rapidly across the screens around her, sticky notes fluttering, papers swirling. She stays composed with a slight raised eyebrow. Fast subtle camera shake, dramatic office lighting, photorealistic, humorous tone.",
-      "ratio": "1280:720",
-      "duration": 6,
+      "name": "denis_techlead",
+      "image": "denis_profil.jpg",
+      "prompt": "Dramatic character card: man in profile slowly turns his gaze toward the camera with an intense, thoughtful look, cinematic shadows and a cool rim light, slow push-in. Photorealistic, mysterious mastermind energy.",
+      "ratio": "832:1104",
+      "duration": 4,
       "active": false
     },
     {
-      "name": "03_appel_urgence",
-      "image": "ann_telephone.jpg",
-      "prompt": "Dramatic movie-trailer zoom on the analyst holding a phone to her ear, eyes narrowing with focus as an urgent request comes in, blurred colleague rushing in the background. Tense cinematic lighting, photorealistic, high stakes feeling played for fun.",
-      "ratio": "1280:720",
+      "name": "davy_dataengineer",
+      "image": "davy_velo.jpg",
+      "prompt": "Action-hero cameo: cyclist gripping the handlebars, a confident nod, wind moving slightly, sunlight flaring behind him, subtle camera move. Photorealistic, dynamic sporty energy played cinematically.",
+      "ratio": "960:960",
+      "duration": 4,
+      "active": false
+    },
+    {
+      "name": "sam_dataengineer",
+      "image": "sam_studio.jpg",
+      "prompt": "Confident character card: relaxed smile, a slight head turn toward camera, warm cinematic light, slow push-in on a clean background. Photorealistic, cool and approachable hero energy.",
+      "ratio": "832:1104",
+      "duration": 4,
+      "active": false
+    },
+    {
+      "name": "tina_biwizard",
+      "image": "tina_nb.jpg",
+      "prompt": "Vintage black and white character card: warm genuine smile, subtle motion and a gentle head tilt, soft film grain, classic cinematic lighting, slow push-in. Monochrome, timeless, original-crew energy.",
+      "ratio": "720:1280",
+      "duration": 4,
+      "active": false
+    },
+    {
+      "name": "liesbeth_team",
+      "image": "liesbeth_studio.jpg",
+      "prompt": "Character card: friendly confident smile, subtle blink and a slight shoulder shift, soft cinematic light and gentle rim light on a clean neutral background, slow push-in. Photorealistic, warm hero energy.",
+      "ratio": "832:1104",
+      "duration": 4,
+      "active": false
+    },
+    {
+      "name": "laurence_laugh",
+      "image": "laurence_studio.jpg",
+      "prompt": "Joyful character card: she laughs warmly, head tilting back with genuine delight, hair moving, bright lively light on a clean background, subtle camera push-in. Photorealistic, infectious happy energy, comic-relief spark.",
+      "ratio": "832:1104",
       "duration": 5,
       "active": false
     },
     {
-      "name": "04_heroine_se_leve",
-      "image": "ann_debout_confiante.jpg",
-      "prompt": "Epic low-angle hero shot: the analyst rises from her chair with determination, hair and clothing moving in slow motion, a lens flare sweeping across the frame, glowing screens behind her. Cinematic blockbuster lighting, photorealistic, the hero rises.",
+      "name": "mario_team",
+      "image": "mario_studio.jpg",
+      "prompt": "Character card: easy confident grin, a slight nod toward camera, warm cinematic light, slow push-in on a clean background. Photorealistic, friendly hero energy.",
+      "ratio": "832:1104",
+      "duration": 4,
+      "active": false
+    },
+    {
+      "name": "christophe_impossible",
+      "image": "christophe_lunettes.jpg",
+      "prompt": "Comedic villain-stakeholder cameo: he slowly lowers his sunglasses to reveal his eyes with a smug confident grin, dramatic slow-motion, cinematic flare. Photorealistic, over-the-top cool, played for laughs.",
+      "ratio": "832:1104",
+      "duration": 5,
+      "active": false
+    },
+    {
+      "name": "decor_openspace",
+      "image": "decor_openspace.jpg",
+      "prompt": "Sweeping cinematic move through a modern BI open-space office: large monitors light up one by one with glowing dashboards (finance, sales, operations) animating to life, blue and gold light, data particles in the air. Photorealistic, epic tech atmosphere. (Image de base a generer en text-to-image.)",
       "ratio": "1584:672",
       "duration": 6,
       "active": false
     },
     {
-      "name": "05_super_pouvoirs",
-      "image": "ann_double_ecran.jpg",
-      "prompt": "The analyst faces multiple monitors as dashboards light up one by one — finance, sales, benchmark, operations — charts and graphs animating to life, data reflected in her glasses. Sweeping cinematic camera move, glowing blue and gold light, photorealistic, superhero energy.",
-      "ratio": "1280:720",
-      "duration": 8,
-      "active": false
-    },
-    {
-      "name": "06_clavier_epique",
-      "image": "ann_mains_clavier.jpg",
-      "prompt": "Extreme close-up of hands typing furiously fast on a keyboard, faint sparks and energy trails, dramatic slow motion bursts, glowing screen light. Cinematic, photorealistic, intense and a little over-the-top for comedic effect.",
-      "ratio": "1280:720",
-      "duration": 5,
-      "active": false
-    },
-    {
-      "name": "07_revelation_whoaaaw",
-      "image": "ann_presentation_salle.jpg",
-      "prompt": "The analyst presents a massive perfect dashboard to a meeting room; colleagues stare in awe, jaws dropping. A burst of light reveals the screen, slow dramatic camera push-in. Triumphant cinematic lighting, photorealistic, the whoaaaw moment.",
-      "ratio": "1584:672",
-      "duration": 7,
-      "active": false
-    },
-    {
-      "name": "08_triomphe_confettis",
-      "image": "equipe_celebration.jpg",
-      "prompt": "The whole team applauds and cheers around the analyst, golden confetti falling in slow motion, warm celebratory light, big smiles, a 25 years celebration. Cinematic, photorealistic, joyful triumphant finale.",
+      "name": "decor_confettis",
+      "image": "decor_confettis.jpg",
+      "prompt": "Corporate celebration finale: golden confetti falling in slow motion over a cheering team, warm celebratory light, balloons, a joyful 25 years party atmosphere. Photorealistic, triumphant. (Image de base a generer en text-to-image.)",
       "ratio": "1280:720",
       "duration": 7,
       "active": false
