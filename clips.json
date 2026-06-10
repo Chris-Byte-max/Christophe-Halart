@@ -9,7 +9,7 @@
     "sam": "Data Engineer",
     "mario": "Functional Analyst BI",
     "tina": "Functional Analyst BI",
-    "olivier": "A CONFIRMER (role ?)",
+    "olivier": "Product Owner Data",
     "christophe": "cameo comique"
   },
   "_workflow": "Teste d'abord le clip actif (ann_hero). Quand le rendu te plait, passe les autres a \"active\": true et relance. Les clips decor_* necessitent d'abord une image generee (poster.py / text-to-image) deposee dans photos/. Les noms d'image sont retrouves sans tenir compte de la casse ni de l'extension.",
