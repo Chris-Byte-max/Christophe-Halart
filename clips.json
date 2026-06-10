@@ -22,7 +22,7 @@
     {
       "name": "ann_hero",
       "image": "ann_studio.jpg",
-      "prompt": "Epic hero reveal: a confident woman in a blue dress stands tall against a clean neutral studio background, slow cinematic push-in, a determined warm smile forming, hair moving gently, soft rim light and a subtle lens flare sweeping across the frame. Photorealistic, blockbuster lighting, the hero has arrived.",
+      "prompt": "Epic hero reveal: a confident woman in a blue dress stands tall against a clean neutral studio background, slow cinematic push-in to a flattering medium shot, a determined warm smile, hair moving very gently. Soft cinematic rim light and a gentle warm glow, well-exposed with natural skin tones, no overexposure and no harsh lens flare. Photorealistic, tasteful blockbuster lighting, the hero has arrived.",
       "duration": 6,
       "active": true
     },
