@@ -108,12 +108,26 @@ def select_clips(clips: list[dict], defaults: dict, args) -> list[dict]:
 
 # --- Encodage de la photo en data URI --------------------------------------
 
+def resolve_photo(image_name: str) -> Path:
+    """Retrouve la photo dans photos/ de façon tolérante : d'abord le chemin
+    exact, sinon une correspondance par nom sans tenir compte de la casse ni
+    de l'extension (.jpg/.jpeg/.png/...)."""
+    exact = PHOTOS_DIR / image_name
+    if exact.exists():
+        return exact
+    stem = Path(image_name).stem.lower()
+    if PHOTOS_DIR.exists():
+        for f in sorted(PHOTOS_DIR.iterdir()):
+            if f.is_file() and f.stem.lower() == stem:
+                return f
+    raise FileNotFoundError(
+        f"Photo introuvable pour « {image_name} » dans photos/ "
+        f"(dépose-la, ou corrige le champ \"image\")."
+    )
+
+
 def image_to_data_uri(image_name: str) -> str:
-    path = PHOTOS_DIR / image_name
-    if not path.exists():
-        raise FileNotFoundError(
-            f"Photo manquante : {path} (dépose-la dans photos/ ou corrige \"image\")"
-        )
+    path = resolve_photo(image_name)
     mime, _ = mimetypes.guess_type(str(path))
     if mime is None:
         mime = "image/jpeg"
@@ -181,6 +195,11 @@ def generate_clip(client, clip: dict, dry_run: bool) -> bool:
     info(f"   prompt: {prompt}")
 
     if dry_run:
+        try:
+            found = resolve_photo(clip["image"])
+            info(f"   photo OK : {found.name}")
+        except FileNotFoundError:
+            warn(f"   photo absente : {clip['image']} (à déposer dans photos/)")
         info("   (dry-run : aucun appel API)")
         return True
 

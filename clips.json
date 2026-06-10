@@ -1,17 +1,18 @@
 {
-  "_concept": "ANN: THE BUSINESS ANALYST — fausse bande-annonce hollywoodienne d'ensemble pour les 25 ans d'ancienneté d'Ann (Business Analyst, team BI). Ton epique + humoristique. Revelation du casting facon Marvel, puis Ann en heroine, montage data, triomphe. Les cartons-noms et le texte sont ajoutes au montage (Canva), pas par Runway.",
+  "_concept": "ANN: THE BUSINESS ANALYST — fausse bande-annonce hollywoodienne d'ensemble pour les 25 ans d'ancienneté d'Ann (Business Analyst, team BI). Ton epique + humoristique. Revelation du casting facon Marvel (toutes les photos en format studio uniforme), Ann en heroine, montage data, triomphe. Cartons-noms et texte ajoutes au montage (Canva), pas par Runway.",
   "_casting": {
     "ann": "Business Analyst - heroine",
     "liesbeth": "Business Analyst",
     "laurence": "Business Analyst",
     "denis": "Tech Lead",
-    "davy": "Data Engineer (cycliste)",
-    "sam": "Data Engineer (photo a recadrer)",
-    "mario": "Functional Analyst BI (photo a recadrer)",
-    "tina": "Functional Analyst BI (photo N&B)",
+    "davy": "Data Engineer",
+    "sam": "Data Engineer",
+    "mario": "Functional Analyst BI",
+    "tina": "Functional Analyst BI",
+    "olivier": "A CONFIRMER (role ?)",
     "christophe": "cameo comique"
   },
-  "_workflow": "Teste d'abord le clip actif (ann_hero). Quand le rendu te plait, passe les autres a \"active\": true et relance. Les clips decor_* necessitent d'abord une image generee (voir poster.py / text-to-image) deposee dans photos/.",
+  "_workflow": "Teste d'abord le clip actif (ann_hero). Quand le rendu te plait, passe les autres a \"active\": true et relance. Les clips decor_* necessitent d'abord une image generee (poster.py / text-to-image) deposee dans photos/. Les noms d'image sont retrouves sans tenir compte de la casse ni de l'extension.",
   "defaults": {
     "model": "gen4.5",
     "ratio": "832:1104",
@@ -21,72 +22,63 @@
     {
       "name": "ann_hero",
       "image": "ann_studio.jpg",
-      "prompt": "Epic hero reveal: confident business analyst standing tall, a slow cinematic push-in, subtle smile forming, hair moving gently, a soft lens flare and dramatic rim light sweeping across a clean neutral background. Photorealistic, blockbuster lighting, the hero has arrived.",
-      "ratio": "832:1104",
+      "prompt": "Epic hero reveal: a confident woman in a blue dress stands tall against a clean neutral studio background, slow cinematic push-in, a determined warm smile forming, hair moving gently, soft rim light and a subtle lens flare sweeping across the frame. Photorealistic, blockbuster lighting, the hero has arrived.",
       "duration": 6,
       "active": true
     },
     {
       "name": "denis_techlead",
-      "image": "denis_profil.jpg",
-      "prompt": "Dramatic character card: man in profile slowly turns his gaze toward the camera with an intense, thoughtful look, cinematic shadows and a cool rim light, slow push-in. Photorealistic, mysterious mastermind energy.",
-      "ratio": "832:1104",
-      "duration": 4,
+      "image": "Denis_Studio.jpg",
+      "prompt": "Cool character card: a man in a crisp white shirt stands confidently, hands in pockets, a slight knowing nod toward camera, sharp cinematic rim light on a clean studio background, slow push-in. Photorealistic, calm mastermind energy.",
       "active": false
     },
     {
       "name": "davy_dataengineer",
-      "image": "davy_velo.jpg",
-      "prompt": "Action-hero cameo: cyclist gripping the handlebars, a confident nod, wind moving slightly, sunlight flaring behind him, subtle camera move. Photorealistic, dynamic sporty energy played cinematically.",
-      "ratio": "960:960",
-      "duration": 4,
+      "image": "Davy_Studio.jpg",
+      "prompt": "Action-hero cameo: a man in a colorful cycling kit and helmet stands ready like an athlete before a sprint, hand on hip, subtle energy and a confident look, dynamic studio light with a flare. Photorealistic, sporty over-the-top energy played for fun.",
       "active": false
     },
     {
       "name": "sam_dataengineer",
-      "image": "sam_studio.jpg",
-      "prompt": "Confident character card: relaxed smile, a slight head turn toward camera, warm cinematic light, slow push-in on a clean background. Photorealistic, cool and approachable hero energy.",
-      "ratio": "832:1104",
-      "duration": 4,
+      "image": "Sam_Studio.jpg",
+      "prompt": "Relaxed cool character card: a man in a floral shirt stands easily with a laid-back confident smile, a slight head tilt toward camera, warm studio light, slow push-in on a clean background. Photorealistic, effortless charm.",
       "active": false
     },
     {
       "name": "tina_biwizard",
-      "image": "tina_nb.jpg",
-      "prompt": "Vintage black and white character card: warm genuine smile, subtle motion and a gentle head tilt, soft film grain, classic cinematic lighting, slow push-in. Monochrome, timeless, original-crew energy.",
-      "ratio": "720:1280",
-      "duration": 4,
+      "image": "Tina_Studio.jpg",
+      "prompt": "Playful character card: a woman in a denim shirt looks up and toward camera with a bright genuine grin, subtle motion and a gentle shift of weight, warm lively studio light, slow push-in. Photorealistic, charismatic spark.",
       "active": false
     },
     {
       "name": "liesbeth_team",
       "image": "liesbeth_studio.jpg",
-      "prompt": "Character card: friendly confident smile, subtle blink and a slight shoulder shift, soft cinematic light and gentle rim light on a clean neutral background, slow push-in. Photorealistic, warm hero energy.",
-      "ratio": "832:1104",
-      "duration": 4,
+      "prompt": "Warm character card: a woman in a black floral top stands with a friendly confident smile, a subtle blink and slight shoulder shift, soft cinematic studio light with gentle rim light, slow push-in. Photorealistic, welcoming hero energy.",
       "active": false
     },
     {
       "name": "laurence_laugh",
       "image": "laurence_studio.jpg",
-      "prompt": "Joyful character card: she laughs warmly, head tilting back with genuine delight, hair moving, bright lively light on a clean background, subtle camera push-in. Photorealistic, infectious happy energy, comic-relief spark.",
-      "ratio": "832:1104",
+      "prompt": "Joyful character card: a woman in a blue dress laughs warmly, head tilting back with genuine delight, hair moving, bright lively studio light, subtle camera push-in. Photorealistic, infectious happy energy.",
       "duration": 5,
       "active": false
     },
     {
       "name": "mario_team",
-      "image": "mario_studio.jpg",
-      "prompt": "Character card: easy confident grin, a slight nod toward camera, warm cinematic light, slow push-in on a clean background. Photorealistic, friendly hero energy.",
-      "ratio": "832:1104",
-      "duration": 4,
+      "image": "Mario_Studio.jpg",
+      "prompt": "Character card: a man in a striped polo stands with an easy confident grin, hands relaxed, a slight nod toward camera, warm studio light, slow push-in on a clean background. Photorealistic, friendly hero energy.",
+      "active": false
+    },
+    {
+      "name": "olivier_team",
+      "image": "Olivier_Studio.jpg",
+      "prompt": "Suave character card: a man in a sharp navy suit and bow tie adjusts his cuff with elegant confidence, a subtle smirk, dramatic cinematic rim light on a clean studio background, slow push-in. Photorealistic, James-Bond style class played with a wink.",
       "active": false
     },
     {
       "name": "christophe_impossible",
-      "image": "christophe_lunettes.jpg",
-      "prompt": "Comedic villain-stakeholder cameo: he slowly lowers his sunglasses to reveal his eyes with a smug confident grin, dramatic slow-motion, cinematic flare. Photorealistic, over-the-top cool, played for laughs.",
-      "ratio": "832:1104",
+      "image": "Christophe_Studio.jpg",
+      "prompt": "Comedic stakeholder cameo: a man in sunglasses and a grey t-shirt slowly lowers his sunglasses to reveal his eyes with a smug confident grin, dramatic slow-motion, cinematic flare on a clean studio background. Photorealistic, over-the-top cool, played for laughs.",
       "duration": 5,
       "active": false
     },
@@ -101,7 +93,7 @@
     {
       "name": "decor_confettis",
       "image": "decor_confettis.jpg",
-      "prompt": "Corporate celebration finale: golden confetti falling in slow motion over a cheering team, warm celebratory light, balloons, a joyful 25 years party atmosphere. Photorealistic, triumphant. (Image de base a generer en text-to-image.)",
+      "prompt": "Corporate celebration finale: golden confetti falling in slow motion, warm celebratory light, balloons, a joyful 25 years party atmosphere. Photorealistic, triumphant. (Image de base a generer en text-to-image.)",
       "ratio": "1280:720",
       "duration": 7,
       "active": false
