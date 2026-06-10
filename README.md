@@ -63,15 +63,42 @@ python animate.py --config FILE   # utilise un autre fichier que clips.json
 python animate.py --dry-run       # affiche ce qui serait fait, sans appeler l'API
 ```
 
+## Affiche bonus « ANN — 25 YEARS » (`poster.py`)
+
+Génère une affiche via l'endpoint **text-to-image** de Runway. Par défaut,
+modèle `gemini_image3_pro` (très bon rendu de la typographie) en portrait
+`1792:2400`.
+
+```
+python poster.py                                  # affiche par défaut
+python poster.py --prompt "..."                   # prompt personnalisé
+python poster.py --model gpt_image_2 --ratio 1440:1920
+python poster.py --ref photos/ann_portrait_1999.jpg --ref-tag ann
+python poster.py --out output/affiche_ann.png
+python poster.py --seed 12345                     # reproductibilité
+python poster.py --dry-run                         # plan sans appel API
+```
+
+- `--ref` accepte une URL **ou** un fichier local (converti en data URI) ;
+  répétable pour plusieurs références. `--ref-tag` donne un tag référençable
+  dans le prompt (modèles compatibles : `gpt_image_2`, `gemini_image3_pro`,
+  `gen4_image`, `gen4_image_turbo`).
+- Le `ratio` est validé selon le modèle choisi (message d'erreur listant les
+  valeurs valides si besoin).
+- Comme pour les clips, le `seed` est consigné dans `output/production_log.json`
+  (entrée `"type": "poster"`) pour pouvoir régénérer la même affiche.
+
+> Astuce ressemblance : passe une photo nette de Ann en `--ref ... --ref-tag ann`
+> et référence-la dans ton prompt pour intégrer son portrait à l'affiche.
+
 ## Étapes hors pipeline (montage final)
 
 - **Restauration / upscaling** des vieilles photos : à faire AVANT
   (Topaz, Magnific…) — Runway anime mieux une photo nette.
 - **Montage, textes, musique, Ken Burns** sur les photos non animées :
   dans Canva (Brand Kit déjà connecté).
-- **Affiche bonus** "ANN — 25 YEARS" : générable via l'endpoint
-  text-to-image de Runway (gpt_image_2 / gemini_image3_pro) — à ajouter
-  au pipeline dans un second temps si besoin.
+- **Affiche bonus** "ANN — 25 YEARS" : désormais intégrée au pipeline via
+  `poster.py` (voir la section dédiée ci-dessus).
 
 ## Sécurité
 - `.env` et `photos/` sont dans `.gitignore`.

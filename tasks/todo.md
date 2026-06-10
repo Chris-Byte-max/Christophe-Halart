@@ -24,3 +24,11 @@ clips vidéo via l'API Runway).
 - [x] `README.md` — ajouter au repo
 - [x] Vérifier : compilation python, validation JSON
 - [x] Commit + push sur `claude/gracious-allen-d2mty7`
+
+### Affiche bonus (text-to-image)
+- [x] Vérifier l'API text_to_image (modèles, ratios exacts par modèle)
+- [x] `poster.py` — endpoint text-to-image, modèle `gemini_image3_pro` par défaut,
+  validation des ratios par modèle, images de référence optionnelles (--ref/--ref-tag),
+  seed consigné dans le journal (réutilise les briques de animate.py)
+- [x] Documenter `poster.py` dans le README
+- [x] Vérifier (compile, dry-run, validations) + commit/push
