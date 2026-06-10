@@ -1,4 +1,5 @@
 {
+  "_concept": "ANN: THE BUSINESS ANALYST — fausse bande-annonce hollywoodienne, humoristique, pour les 25 ans d'ancienneté de Ann (Business Analyst). Ton épique + décalé. ~2 min au montage final.",
   "defaults": {
     "model": "gen4.5",
     "ratio": "1280:720",
@@ -6,33 +7,67 @@
   },
   "clips": [
     {
-      "name": "ann_portrait_1999",
-      "image": "ann_portrait_1999.jpg",
-      "prompt": "Subtle, lifelike motion: she blinks softly and smiles, a few strands of hair drift in a gentle breeze. Warm nostalgic light, photorealistic, no camera movement.",
-      "duration": 5,
+      "name": "01_calme_avant_tempete",
+      "image": "ann_bureau_cafe.jpg",
+      "prompt": "Cinematic slow push-in on a calm business analyst at her desk holding a coffee, gentle steam rising from the cup, soft warm morning light through office windows, she looks up with a confident knowing smile. Photorealistic, shallow depth of field, the calm before the storm.",
+      "ratio": "1584:672",
+      "duration": 6,
       "active": true
     },
     {
-      "name": "famille_jardin",
-      "image": "famille_jardin.jpg",
-      "prompt": "Gentle natural movement: the family laughs together, leaves rustle in the background, soft summer light. Cinematic, photorealistic, very subtle camera push-in.",
+      "name": "02_avalanche_demandes",
+      "image": "ann_ecran_mails.jpg",
+      "prompt": "Comedic cinematic shot: dozens of urgent email and chat notifications pop up rapidly across the screens around her, sticky notes fluttering, papers swirling. She stays composed with a slight raised eyebrow. Fast subtle camera shake, dramatic office lighting, photorealistic, humorous tone.",
+      "ratio": "1280:720",
+      "duration": 6,
+      "active": false
+    },
+    {
+      "name": "03_appel_urgence",
+      "image": "ann_telephone.jpg",
+      "prompt": "Dramatic movie-trailer zoom on the analyst holding a phone to her ear, eyes narrowing with focus as an urgent request comes in, blurred colleague rushing in the background. Tense cinematic lighting, photorealistic, high stakes feeling played for fun.",
+      "ratio": "1280:720",
       "duration": 5,
       "active": false
     },
     {
-      "name": "mariage_danse",
-      "image": "mariage_danse.jpg",
-      "prompt": "The couple sways slowly as if dancing, fabric and hair moving naturally, warm candlelight flickering. Romantic, photorealistic, slow motion feel.",
+      "name": "04_heroine_se_leve",
+      "image": "ann_debout_confiante.jpg",
+      "prompt": "Epic low-angle hero shot: the analyst rises from her chair with determination, hair and clothing moving in slow motion, a lens flare sweeping across the frame, glowing screens behind her. Cinematic blockbuster lighting, photorealistic, the hero rises.",
+      "ratio": "1584:672",
       "duration": 6,
-      "ratio": "1104:832",
       "active": false
     },
     {
-      "name": "portrait_vertical",
-      "image": "portrait_vertical.jpg",
-      "prompt": "A living portrait: subtle breathing, a warm smile forming, eyes coming alive. Soft studio light, photorealistic, locked-off camera.",
-      "duration": 4,
-      "ratio": "720:1280",
+      "name": "05_super_pouvoirs",
+      "image": "ann_double_ecran.jpg",
+      "prompt": "The analyst faces multiple monitors as dashboards light up one by one — finance, sales, benchmark, operations — charts and graphs animating to life, data reflected in her glasses. Sweeping cinematic camera move, glowing blue and gold light, photorealistic, superhero energy.",
+      "ratio": "1280:720",
+      "duration": 8,
+      "active": false
+    },
+    {
+      "name": "06_clavier_epique",
+      "image": "ann_mains_clavier.jpg",
+      "prompt": "Extreme close-up of hands typing furiously fast on a keyboard, faint sparks and energy trails, dramatic slow motion bursts, glowing screen light. Cinematic, photorealistic, intense and a little over-the-top for comedic effect.",
+      "ratio": "1280:720",
+      "duration": 5,
+      "active": false
+    },
+    {
+      "name": "07_revelation_whoaaaw",
+      "image": "ann_presentation_salle.jpg",
+      "prompt": "The analyst presents a massive perfect dashboard to a meeting room; colleagues stare in awe, jaws dropping. A burst of light reveals the screen, slow dramatic camera push-in. Triumphant cinematic lighting, photorealistic, the whoaaaw moment.",
+      "ratio": "1584:672",
+      "duration": 7,
+      "active": false
+    },
+    {
+      "name": "08_triomphe_confettis",
+      "image": "equipe_celebration.jpg",
+      "prompt": "The whole team applauds and cheers around the analyst, golden confetti falling in slow motion, warm celebratory light, big smiles, a 25 years celebration. Cinematic, photorealistic, joyful triumphant finale.",
+      "ratio": "1280:720",
+      "duration": 7,
       "active": false
     }
   ]
