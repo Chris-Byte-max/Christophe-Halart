@@ -139,10 +139,12 @@ def main(argv=None) -> int:
         fail(f"{args.model} n'accepte pas d'images de référence. Modèles compatibles : {', '.join(sorted(REF_CAPABLE))}")
         return 1
 
-    seed = args.seed if args.seed is not None else random.randint(0, 2**32 - 1)
+    # En text-to-image, le seed n'est pas accepté par tous les modèles
+    # (ex. gpt_image_2 le refuse). On ne l'envoie que s'il est demandé.
+    seed = args.seed
 
     info("🖼️  Affiche bonus")
-    info(f"   modèle={args.model}  ratio={args.ratio}  seed={seed}")
+    info(f"   modèle={args.model}  ratio={args.ratio}  seed={seed if seed is not None else 'auto'}")
     info(f"   sortie={args.out}")
     info(f"   prompt: {args.prompt}")
 
@@ -164,8 +166,9 @@ def main(argv=None) -> int:
         "model": args.model,
         "prompt_text": args.prompt,
         "ratio": args.ratio,
-        "seed": seed,
     }
+    if seed is not None:
+        params["seed"] = seed
     if reference_images:
         params["reference_images"] = reference_images
 
