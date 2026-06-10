@@ -86,7 +86,7 @@
       "name": "decor_openspace",
       "image": "decor_openspace.jpg",
       "prompt": "Sweeping cinematic move through a modern BI open-space office: large monitors light up one by one with glowing dashboards (finance, sales, operations) animating to life, blue and gold light, data particles in the air, well-exposed. Photorealistic, epic tech atmosphere. (Image de base a generer en text-to-image.)",
-      "ratio": "1584:672",
+      "ratio": "1280:720",
       "duration": 6,
       "active": false
     },
