@@ -3,6 +3,23 @@
 Petit pipeline pour animer des photos en clips vidéo via l'API Runway (Gen-4.5),
 dans le cadre de la vidéo hommage des 25 ans.
 
+## Deux outils, deux rôles (à lire en premier)
+
+Ce dépôt contient **deux choses** — pour éviter toute confusion :
+
+1. **Le pipeline maison (`animate.py` / `poster.py`) — outil PRINCIPAL.**
+   C'est ce que tu lances toi-même : `python animate.py`. Workflow en lot via
+   `clips.json`, seed consigné, dry-run, validation. Taillé pour l'hommage.
+
+2. **Les skills officiels Runway (`.agents/skills/`) — RÉFÉRENCE / secours.**
+   Installés via `npx skills add runwayml/skills`. Pensés pour être pilotés
+   par un agent IA (Claude Code). On les garde surtout pour la doc API à jour
+   (`rw-api-reference`) et les modèles avancés (`seedance2`, `veo3`, audio).
+   Ton `animate.py` accepte déjà ces modèles via le champ `"model"` d'un clip.
+
+👉 Au quotidien, utilise le pipeline maison. Pioche dans les skills quand tu
+veux changer de modèle ou explorer une fonctionnalité Runway plus poussée.
+
 ## Mise en route (5 minutes)
 
 1. **Déposer le projet** dans ton dossier de travail Claude Code.
