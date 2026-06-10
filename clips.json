@@ -1,5 +1,5 @@
 {
-  "_concept": "ANN: THE BUSINESS ANALYST — fausse bande-annonce hollywoodienne d'ensemble pour les 25 ans d'ancienneté d'Ann (Business Analyst, team BI). Ton epique + humoristique. Revelation du casting facon Marvel (toutes les photos en format studio uniforme), Ann en heroine, montage data, triomphe. Cartons-noms et texte ajoutes au montage (Canva), pas par Runway.",
+  "_concept": "ANN: THE BUSINESS ANALYST — fausse bande-annonce hollywoodienne d'ensemble pour les 25 ans d'anciennete d'Ann (Business Analyst, team BI). Ton epique + humoristique. Revelation du casting facon Marvel (photos en format studio uniforme), Ann en heroine, montage data, triomphe. Cartons-noms et texte ajoutes au montage (Canva), pas par Runway.",
   "_casting": {
     "ann": "Business Analyst - heroine",
     "liesbeth": "Business Analyst",
@@ -12,7 +12,7 @@
     "olivier": "Product Owner Data",
     "christophe": "cameo comique"
   },
-  "_workflow": "Teste d'abord le clip actif (ann_hero). Quand le rendu te plait, passe les autres a \"active\": true et relance. Les clips decor_* necessitent d'abord une image generee (poster.py / text-to-image) deposee dans photos/. Les noms d'image sont retrouves sans tenir compte de la casse ni de l'extension.",
+  "_workflow": "Les 10 personnes sont actives. Lance 'python animate.py' pour tout generer. Les clips decor_* sont inactifs : genere d'abord leur image (poster.py) dans photos/, puis 'python animate.py --only decor_openspace' et '--only decor_confettis'. Lumiere harmonisee : bien exposee, sans flare agressif.",
   "defaults": {
     "model": "gen4.5",
     "ratio": "832:1104",
@@ -29,63 +29,63 @@
     {
       "name": "denis_techlead",
       "image": "Denis_Studio.jpg",
-      "prompt": "Cool character card: a man in a crisp white shirt stands confidently, hands in pockets, a slight knowing nod toward camera, sharp cinematic rim light on a clean studio background, slow push-in. Photorealistic, calm mastermind energy.",
-      "active": false
+      "prompt": "Cool character card: a man in a crisp white shirt stands confidently, hands in pockets, a slight knowing nod toward camera, slow cinematic push-in. Sharp soft rim light on a clean studio background, well-exposed natural tones, no overexposure or harsh flare. Photorealistic, calm mastermind energy.",
+      "active": true
     },
     {
       "name": "davy_dataengineer",
       "image": "Davy_Studio.jpg",
-      "prompt": "Action-hero cameo: a man in a colorful cycling kit and helmet stands ready like an athlete before a sprint, hand on hip, subtle energy and a confident look, dynamic studio light with a flare. Photorealistic, sporty over-the-top energy played for fun.",
-      "active": false
+      "prompt": "Action-hero cameo: a man in a colorful cycling kit and helmet stands ready like an athlete before a sprint, hand on hip, a confident look, subtle energy, slow push-in. Dynamic but well-exposed studio light, natural tones, no overexposure or harsh flare. Photorealistic, sporty over-the-top energy played for fun.",
+      "active": true
     },
     {
       "name": "sam_dataengineer",
       "image": "Sam_Studio.jpg",
-      "prompt": "Relaxed cool character card: a man in a floral shirt stands easily with a laid-back confident smile, a slight head tilt toward camera, warm studio light, slow push-in on a clean background. Photorealistic, effortless charm.",
-      "active": false
+      "prompt": "Relaxed cool character card: a man in a floral shirt stands easily with a laid-back confident smile, a slight head tilt toward camera, slow push-in. Warm well-exposed studio light, natural tones, no overexposure or harsh flare. Photorealistic, effortless charm.",
+      "active": true
     },
     {
       "name": "tina_biwizard",
       "image": "Tina_Studio.jpg",
-      "prompt": "Playful character card: a woman in a denim shirt looks up and toward camera with a bright genuine grin, subtle motion and a gentle shift of weight, warm lively studio light, slow push-in. Photorealistic, charismatic spark.",
-      "active": false
+      "prompt": "Playful character card: a woman in a denim shirt looks up and toward camera with a bright genuine grin, subtle motion and a gentle shift of weight, slow push-in. Warm lively well-exposed studio light, natural tones, no overexposure or harsh flare. Photorealistic, charismatic spark.",
+      "active": true
     },
     {
       "name": "liesbeth_team",
       "image": "liesbeth_studio.jpg",
-      "prompt": "Warm character card: a woman in a black floral top stands with a friendly confident smile, a subtle blink and slight shoulder shift, soft cinematic studio light with gentle rim light, slow push-in. Photorealistic, welcoming hero energy.",
-      "active": false
+      "prompt": "Warm character card: a woman in a black floral top stands with a friendly confident smile, a subtle blink and slight shoulder shift, slow push-in. Soft cinematic studio light with gentle rim light, well-exposed natural tones, no overexposure or harsh flare. Photorealistic, welcoming hero energy.",
+      "active": true
     },
     {
       "name": "laurence_laugh",
       "image": "laurence_studio.jpg",
-      "prompt": "Joyful character card: a woman in a blue dress laughs warmly, head tilting back with genuine delight, hair moving, bright lively studio light, subtle camera push-in. Photorealistic, infectious happy energy.",
+      "prompt": "Joyful character card: a woman in a blue dress laughs warmly, head tilting back with genuine delight, hair moving, subtle camera push-in. Bright lively well-exposed studio light, natural tones, no overexposure or harsh flare. Photorealistic, infectious happy energy.",
       "duration": 5,
-      "active": false
+      "active": true
     },
     {
       "name": "mario_team",
       "image": "Mario_Studio.jpg",
-      "prompt": "Character card: a man in a striped polo stands with an easy confident grin, hands relaxed, a slight nod toward camera, warm studio light, slow push-in on a clean background. Photorealistic, friendly hero energy.",
-      "active": false
+      "prompt": "Character card: a man in a striped polo stands with an easy confident grin, hands relaxed, a slight nod toward camera, slow push-in. Warm well-exposed studio light, natural tones, no overexposure or harsh flare. Photorealistic, friendly hero energy.",
+      "active": true
     },
     {
       "name": "olivier_team",
       "image": "Olivier_Studio.jpg",
-      "prompt": "Suave character card: a man in a sharp navy suit and bow tie adjusts his cuff with elegant confidence, a subtle smirk, dramatic cinematic rim light on a clean studio background, slow push-in. Photorealistic, James-Bond style class played with a wink.",
-      "active": false
+      "prompt": "Suave character card: a man in a sharp navy suit and bow tie adjusts his cuff with elegant confidence, a subtle smirk, slow push-in. Dramatic but well-exposed cinematic rim light on a clean studio background, natural tones, no overexposure or harsh flare. Photorealistic, James-Bond style class played with a wink.",
+      "active": true
     },
     {
       "name": "christophe_impossible",
       "image": "Christophe_Studio.jpg",
-      "prompt": "Comedic stakeholder cameo: a man in sunglasses and a grey t-shirt slowly lowers his sunglasses to reveal his eyes with a smug confident grin, dramatic slow-motion, cinematic flare on a clean studio background. Photorealistic, over-the-top cool, played for laughs.",
+      "prompt": "Comedic stakeholder cameo: a man in sunglasses and a grey t-shirt slowly lowers his sunglasses to reveal his eyes with a smug confident grin, dramatic slow-motion, slow push-in. Well-exposed cinematic light on a clean studio background, natural tones, no overexposure or harsh flare. Photorealistic, over-the-top cool, played for laughs.",
       "duration": 5,
-      "active": false
+      "active": true
     },
     {
       "name": "decor_openspace",
       "image": "decor_openspace.jpg",
-      "prompt": "Sweeping cinematic move through a modern BI open-space office: large monitors light up one by one with glowing dashboards (finance, sales, operations) animating to life, blue and gold light, data particles in the air. Photorealistic, epic tech atmosphere. (Image de base a generer en text-to-image.)",
+      "prompt": "Sweeping cinematic move through a modern BI open-space office: large monitors light up one by one with glowing dashboards (finance, sales, operations) animating to life, blue and gold light, data particles in the air, well-exposed. Photorealistic, epic tech atmosphere. (Image de base a generer en text-to-image.)",
       "ratio": "1584:672",
       "duration": 6,
       "active": false
@@ -93,7 +93,7 @@
     {
       "name": "decor_confettis",
       "image": "decor_confettis.jpg",
-      "prompt": "Corporate celebration finale: golden confetti falling in slow motion, warm celebratory light, balloons, a joyful 25 years party atmosphere. Photorealistic, triumphant. (Image de base a generer en text-to-image.)",
+      "prompt": "Corporate celebration finale: golden confetti falling in slow motion, warm celebratory light, balloons, a joyful 25 years party atmosphere, well-exposed. Photorealistic, triumphant. (Image de base a generer en text-to-image.)",
       "ratio": "1280:720",
       "duration": 7,
       "active": false
