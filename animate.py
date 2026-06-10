@@ -20,7 +20,9 @@ import argparse
 import base64
 import json
 import mimetypes
+import os
 import random
+import shutil
 import sys
 import time
 from datetime import datetime, timezone
@@ -177,7 +179,7 @@ def append_log(entry: dict) -> None:
 
 # --- Génération d'un clip ---------------------------------------------------
 
-def generate_clip(client, clip: dict, dry_run: bool) -> bool:
+def generate_clip(client, clip: dict, dry_run: bool, export_dir: Path | None = None) -> bool:
     name = clip["name"]
     model = clip.get("model", "gen4.5")
     ratio = clip.get("ratio", "1280:720")
@@ -200,6 +202,8 @@ def generate_clip(client, clip: dict, dry_run: bool) -> bool:
             info(f"   photo OK : {found.name}")
         except FileNotFoundError:
             warn(f"   photo absente : {clip['image']} (à déposer dans photos/)")
+        if export_dir:
+            info(f"   export -> {export_dir / (name + '.mp4')}")
         info("   (dry-run : aucun appel API)")
         return True
 
@@ -262,7 +266,21 @@ def generate_clip(client, clip: dict, dry_run: bool) -> bool:
 
     if ok:
         info(f"   ✅ {out_path.relative_to(ROOT)}")
+        if export_dir:
+            export_copy(out_path, export_dir)
     return ok
+
+
+def export_copy(src: Path, export_dir: Path) -> None:
+    """Copie le rendu vers un dossier d'export (ex. OneDrive). Best-effort :
+    une erreur de copie ne fait pas échouer la génération."""
+    try:
+        export_dir.mkdir(parents=True, exist_ok=True)
+        dest = export_dir / src.name
+        shutil.copy2(src, dest)
+        info(f"   📤 export : {dest}")
+    except Exception as exc:  # noqa: BLE001
+        warn(f"   export échoué vers {export_dir} : {exc}")
 
 
 def poll_task(client, task_id: str):
@@ -351,11 +369,31 @@ def parse_args(argv=None):
     parser.add_argument("--all", action="store_true", help="traiter tous les clips (ignore \"active\")")
     parser.add_argument("--only", metavar="NAME", help="traiter un seul clip par son \"name\"")
     parser.add_argument("--dry-run", action="store_true", help="ne pas appeler l'API, montrer le plan")
+    parser.add_argument("--export-dir", type=Path, default=None,
+                        help="copie aussi chaque .mp4 vers ce dossier (sinon: variable EXPORT_DIR du .env)")
     return parser.parse_args(argv)
+
+
+def load_env() -> None:
+    """Charge .env si possible (best-effort) pour récupérer EXPORT_DIR / la clé."""
+    try:
+        from dotenv import load_dotenv
+        load_dotenv(ROOT / ".env")
+    except ImportError:
+        pass
+
+
+def resolve_export_dir(args) -> Path | None:
+    if args.export_dir:
+        return args.export_dir
+    env_val = (os.environ.get("EXPORT_DIR") or "").strip().strip('"')
+    return Path(env_val) if env_val else None
 
 
 def main(argv=None) -> int:
     args = parse_args(argv)
+    load_env()
+    export_dir = resolve_export_dir(args)
     defaults, clips = load_config(args.config)
     selected = select_clips(clips, defaults, args)
 
@@ -375,12 +413,14 @@ def main(argv=None) -> int:
         return 1
 
     info(f"{len(selected)} clip(s) à traiter.")
+    if export_dir:
+        info(f"Export activé vers : {export_dir}")
 
     client = None if args.dry_run else build_client()
 
     ok_count = 0
     for clip in selected:
-        if generate_clip(client, clip, args.dry_run):
+        if generate_clip(client, clip, args.dry_run, export_dir):
             ok_count += 1
 
     info(f"\nTerminé : {ok_count}/{len(selected)} clip(s) réussi(s).")
