@@ -1,0 +1,17 @@
+# Secrets — ne jamais commiter la clé
+.env
+
+# Photos sources (garder le dossier, ignorer le contenu)
+photos/*
+!photos/.gitkeep
+
+# Sorties générées (garder le dossier, ignorer le contenu)
+output/*
+!output/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.DS_Store

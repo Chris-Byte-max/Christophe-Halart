@@ -1,0 +1,39 @@
+{
+  "defaults": {
+    "model": "gen4.5",
+    "ratio": "1280:720",
+    "duration": 5
+  },
+  "clips": [
+    {
+      "name": "ann_portrait_1999",
+      "image": "ann_portrait_1999.jpg",
+      "prompt": "Subtle, lifelike motion: she blinks softly and smiles, a few strands of hair drift in a gentle breeze. Warm nostalgic light, photorealistic, no camera movement.",
+      "duration": 5,
+      "active": true
+    },
+    {
+      "name": "famille_jardin",
+      "image": "famille_jardin.jpg",
+      "prompt": "Gentle natural movement: the family laughs together, leaves rustle in the background, soft summer light. Cinematic, photorealistic, very subtle camera push-in.",
+      "duration": 5,
+      "active": false
+    },
+    {
+      "name": "mariage_danse",
+      "image": "mariage_danse.jpg",
+      "prompt": "The couple sways slowly as if dancing, fabric and hair moving naturally, warm candlelight flickering. Romantic, photorealistic, slow motion feel.",
+      "duration": 6,
+      "ratio": "1104:832",
+      "active": false
+    },
+    {
+      "name": "portrait_vertical",
+      "image": "portrait_vertical.jpg",
+      "prompt": "A living portrait: subtle breathing, a warm smile forming, eyes coming alive. Soft studio light, photorealistic, locked-off camera.",
+      "duration": 4,
+      "ratio": "720:1280",
+      "active": false
+    }
+  ]
+}

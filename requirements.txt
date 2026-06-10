@@ -1,0 +1,4 @@
+# Pipeline d'animation Runway — dépendances
+runwayml>=3.0.0      # SDK officiel Runway (image_to_video, tasks)
+python-dotenv>=1.0.0 # chargement de la clé depuis .env
+requests>=2.31.0     # téléchargement des .mp4 générés
